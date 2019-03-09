@@ -24,6 +24,21 @@ void bad_usage () {
 	std::terminate();
 }
 
+void collapse_repetitions ( std::ostream& out, int& i, std::string const& line, char rep, const char* single, const char* multi ) {
+	int count = 1;
+	while (i+1 < line.size() && line[i+1] == rep) {
+		count++;
+		i++;
+	}
+
+	if(count == 1)
+		out << single;
+	else
+		out << multi << count << ";\n";
+
+}
+
+
 int main (int argc, char** argv) {
 
 	if (argc < 2)
@@ -72,62 +87,10 @@ int main (int argc, char** argv) {
 			for (int i = 0; i < line.size(); ++i) {
 				char c = line[i];
 				switch (c) {
-					case '+': {
-
-						int count = 1;
-						while (i+1 < line.size() && line[i+1] == '+') {
-							count++;
-							i++;
-						}
-
-						if(count == 1)
-							out_file << "(*p)++;\n";
-						else
-							out_file << "*p += " << count << ";\n";
-
-					} break;
-					case '-': {
-
-						int count = 1;
-						while (i+1 < line.size() && line[i+1] == '-') {
-							count++;
-							i++;
-						}
-
-						if(count == 1)
-							out_file << "(*p)--;\n";
-						else
-							out_file << "*p -= " << count << ";\n";
-
-					} break;
-					case '>': {
-
-						int count = 1;
-						while (i+1 < line.size() && line[i+1] == '>') {
-							count++;
-							i++;
-						}
-
-						if (count == 1)
-							out_file << "p++;\n";
-						else
-							out_file << "p += " << count << ";\n";
-
-					} break;
-					case '<': {
-
-						int count = 1;
-						while (i+1 < line.size() && line[i+1] == '<') {
-							count++;
-							i++;
-						}
-
-						if (count == 1)
-							out_file << "p--;\n";
-						else
-							out_file << "p -= " << count << ";\n";
-
-					} break;
+					case '+': collapse_repetitions(out_file, i, line, '+', "(*p)++;", "*p += "); break;
+					case '-': collapse_repetitions(out_file, i, line, '-', "(*p)--;", "*p -= "); break;
+					case '>': collapse_repetitions(out_file, i, line, '>', "p++;", "p += "); break;
+					case '<': collapse_repetitions(out_file, i, line, '<', "p--;", "p -= "); break;
 					case '[': {
 						if (i+2 < line.size() && line[i+1] == '-' && line[i+2] == ']') {
 							out_file << "*p = 0;\n";

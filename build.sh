@@ -1,0 +1,9 @@
+FLAGS=-O3
+
+COMPILER=g++
+
+SOURCE=src/main.cpp
+
+OUTPUT=bin/bfct
+
+$COMPILER $FLAGS -o $OUTPUT $SOURCE 

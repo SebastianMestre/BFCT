@@ -77,9 +77,14 @@ int main (int argc, char** argv) {
 					case '<': out_file << "p--;\n"; break;
 					case '[': out_file << "while (*p) {\n"; break;
 					case ']': out_file << "}\n"; break;
+					case '{': out_file << "while (*p) { p++;\n"; break;
+					case '}': out_file << "p--; (*p)--; }\n"; break;
+					case '(': out_file << "while (*p) { uint8_t* old_p = p; p++;\n"; break;
+					case ')': out_file << "p = old_p; (*p)--; }\n"; break;
 					case '.': out_file << "printf(\"%c\", *p);\n"; break;
 					case ',': out_file << "scanf(\"%c\", p);\n"; break;
-					default: break;
+					case ' ': case '\t': break;
+					default: std::clog << "Invalid Instruction: " << c << '\n'; break;
 				}
 			}
 		}

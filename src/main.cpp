@@ -24,7 +24,7 @@ void bad_usage () {
 	std::terminate();
 }
 
-void collapse_repetitions ( std::ostream& out, int& i, std::string const& line, char rep, const char* single, const char* multi ) {
+int collapse_repetitions ( std::ostream& out, int i, std::string const& line, char rep, const char* single, const char* multi ) {
 	int count = 1;
 	while (i+1 < line.size() && line[i+1] == rep) {
 		count++;
@@ -36,8 +36,8 @@ void collapse_repetitions ( std::ostream& out, int& i, std::string const& line, 
 	else
 		out << multi << count << ";\n";
 
+	return i;
 }
-
 
 int main (int argc, char** argv) {
 
@@ -49,17 +49,11 @@ int main (int argc, char** argv) {
 	
 	{
 		bool has_input = false;
-		bool has_output = false;
 
 		for (int i = 1; i < argc; ++i) {
 			if (argv[i][0] == '-') {
 				if (strcmp(argv[i], "-o") == 0) {
-					if (not has_output) {
-						output_path = argv[++i];
-						has_output = true;
-					} else {
-						bad_usage();
-					}
+					output_path = argv[++i];
 				} else {
 					bad_usage();
 				}
@@ -87,10 +81,10 @@ int main (int argc, char** argv) {
 			for (int i = 0; i < line.size(); ++i) {
 				char c = line[i];
 				switch (c) {
-					case '+': collapse_repetitions(out_file, i, line, '+', "(*p)++;", "*p += "); break;
-					case '-': collapse_repetitions(out_file, i, line, '-', "(*p)--;", "*p -= "); break;
-					case '>': collapse_repetitions(out_file, i, line, '>', "p++;", "p += "); break;
-					case '<': collapse_repetitions(out_file, i, line, '<', "p--;", "p -= "); break;
+					case '+': i = collapse_repetitions(out_file, i, line, '+', "(*p)++;", "*p += "); break;
+					case '-': i = collapse_repetitions(out_file, i, line, '-', "(*p)--;", "*p -= "); break;
+					case '>': i = collapse_repetitions(out_file, i, line, '>', "p++;", "p += "); break;
+					case '<': i = collapse_repetitions(out_file, i, line, '<', "p--;", "p -= "); break;
 					case '[': {
 						if (i+2 < line.size() && line[i+1] == '-' && line[i+2] == ']') {
 							out_file << "*p = 0;\n";

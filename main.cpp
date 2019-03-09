@@ -72,8 +72,34 @@ int main (int argc, char** argv) {
 			for (int i = 0; i < line.size(); ++i) {
 				char c = line[i];
 				switch (c) {
-					case '+': out_file << "(*p)++;\n"; break;
-					case '-': out_file << "(*p)--;\n"; break;
+					case '+': {
+
+						int count = 1;
+						while (i+1 < line.size() && line[i+1] == '+') {
+							count++;
+							i++;
+						}
+
+						if(count == 1)
+							out_file << "(*p)++;\n";
+						else
+							out_file << "*p += " << count << ";\n";
+
+					} break;
+					case '-': {
+
+						int count = 1;
+						while (i+1 < line.size() && line[i+1] == '-') {
+							count++;
+							i++;
+						}
+
+						if(count == 1)
+							out_file << "(*p)--;\n";
+						else
+							out_file << "*p -= " << count << ";\n";
+
+					} break;
 					case '>': {
 
 						int count = 1;
@@ -88,8 +114,30 @@ int main (int argc, char** argv) {
 							out_file << "p += " << count << ";\n";
 
 					} break;
-					case '<': out_file << "p--;\n"; break;
-					case '[': out_file << "while (*p) {\n"; break;
+					case '<': {
+
+						int count = 1;
+						while (i+1 < line.size() && line[i+1] == '<') {
+							count++;
+							i++;
+						}
+
+						if (count == 1)
+							out_file << "p--;\n";
+						else
+							out_file << "p -= " << count << ";\n";
+
+					} break;
+					case '[': {
+						if (i+2 < line.size()) {
+							if (line[i+1] == '-' && line[i+2] == ']') {
+								out_file << "*p = 0;\n";
+								i += 2;
+							}
+						} else {
+							out_file << "while (*p) {\n";
+						}
+					} break;
 					case ']': out_file << "}\n"; break;
 					case '{': out_file << "while (*p) { p++;\n"; break;
 					case '}': out_file << "p--; (*p)--; }\n"; break;

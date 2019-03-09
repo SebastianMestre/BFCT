@@ -129,11 +129,9 @@ int main (int argc, char** argv) {
 
 					} break;
 					case '[': {
-						if (i+2 < line.size()) {
-							if (line[i+1] == '-' && line[i+2] == ']') {
-								out_file << "*p = 0;\n";
-								i += 2;
-							}
+						if (i+2 < line.size() && line[i+1] == '-' && line[i+2] == ']') {
+							out_file << "*p = 0;\n";
+							i += 2;
 						} else {
 							out_file << "while (*p) {\n";
 						}
@@ -143,8 +141,8 @@ int main (int argc, char** argv) {
 					case '}': out_file << "p--; (*p)--; }\n"; break;
 					case '(': out_file << "while (*p) { uint8_t* old_p = p; p++;\n"; break;
 					case ')': out_file << "p = old_p; (*p)--; }\n"; break;
-					case '.': out_file << "printf(\"%c\", *p);\n"; break;
-					case ',': out_file << "scanf(\"%c\", p);\n"; break;
+					case '.': out_file << "putchar(*p);\n"; break;
+					case ',': out_file << "*p = getchar();\n"; break;
 					case ' ': case '\t': break;
 					default: std::clog << "Invalid Instruction: " << c << '\n'; break;
 				}

@@ -69,11 +69,25 @@ int main (int argc, char** argv) {
 
 		out_file << output_header;
 		while (std::getline(in_file, line)) {
-			for (char c : line) {
+			for (int i = 0; i < line.size(); ++i) {
+				char c = line[i];
 				switch (c) {
 					case '+': out_file << "(*p)++;\n"; break;
 					case '-': out_file << "(*p)--;\n"; break;
-					case '>': out_file << "p++;\n"; break;
+					case '>': {
+
+						int count = 1;
+						while (i+1 < line.size() && line[i+1] == '>') {
+							count++;
+							i++;
+						}
+
+						if (count == 1)
+							out_file << "p++;\n";
+						else
+							out_file << "p += " << count << ";\n";
+
+					} break;
 					case '<': out_file << "p--;\n"; break;
 					case '[': out_file << "while (*p) {\n"; break;
 					case ']': out_file << "}\n"; break;

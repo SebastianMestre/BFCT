@@ -10,10 +10,10 @@ std::vector<Op> collapse_consecutive(std::vector<Op> const& code)
     {
         if (op.opcode != opcode and count)
         {
-            result.push_back(multi_op(opcode, count));
+            result.push_back(Op{ opcode, count });
         }
 
-        if (not has_multi(op.opcode))
+        if (not can_merge(op.opcode))
         {
             result.push_back(op);
             opcode = Opcode::Count;
@@ -23,14 +23,18 @@ std::vector<Op> collapse_consecutive(std::vector<Op> const& code)
         {
             if (op.opcode == opcode)
             {
-                count++;
+                count += op.val;
             }
             else
             {
                 opcode = op.opcode;
-                count = 1;
+                count = op.val;
             }
         }
+    }
+    if (count)
+    {
+        result.push_back(Op{ opcode, count });
     }
 
     return result;
@@ -45,8 +49,7 @@ std::vector<Op> constant_folding(std::vector<Op> const& code)
     {
         if (code[i].opcode == Opcode::Lop)
         {
-            if (code[i + 1].opcode == Opcode::Inc || code[i + 1].opcode == Opcode::Dec
-                || code[i + 1] == Op{ Opcode::Addi, 1 } || code[i + 1] == Op{ Opcode::Subi, 1 })
+            if (code[i + 1] == Op{ Opcode::Addi, 1 } || code[i + 1] == Op{ Opcode::Subi, 1 })
             {
                 if (code[i + 2].opcode == Opcode::Lcl)
                 {

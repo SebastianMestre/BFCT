@@ -7,10 +7,10 @@ std::vector<Op> compile(std::string const& code)
     {
         switch (c)
         {
-            case '+': result.push_back({ Opcode::Inc }); break;
-            case '-': result.push_back({ Opcode::Dec }); break;
-            case '>': result.push_back({ Opcode::Mvr }); break;
-            case '<': result.push_back({ Opcode::Mvl }); break;
+            case '+': result.push_back({ Opcode::Addi, 1 }); break;
+            case '-': result.push_back({ Opcode::Subi, 1 }); break;
+            case '>': result.push_back({ Opcode::Jmp,  1 }); break;
+            case '<': result.push_back({ Opcode::Jmp, -1 }); break;
             case '[': result.push_back({ Opcode::Lop }); break;
             case ']': result.push_back({ Opcode::Lcl }); break;
             case '.': result.push_back({ Opcode::Put }); break;

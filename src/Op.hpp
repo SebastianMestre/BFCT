@@ -8,10 +8,6 @@
 enum class Opcode : uint8_t
 {
     // Base brainfuck ops
-    Inc, // Increment at data pointer
-    Dec, // Decrement at data pointer
-    Mvr, // Increment data pointer (move right)
-    Mvl, // Decrement data pointer (move left)
     Lop, // Loop open
     Lcl, // Loop close
     Put, // Write to stdin
@@ -36,17 +32,11 @@ enum class Opcode : uint8_t
 struct Op
 {
     Opcode opcode;
-    // Some ops have signed arguments, some have unsigned arguments
-    union {
-        uint16_t uval;
-        int16_t sval;
-    };
+    int16_t val;
 
-    bool operator==(Op const& o) const { return opcode == o.opcode and uval == o.uval; }
+    bool operator==(Op const& o) const { return opcode == o.opcode and val == o.val; }
 };
 
 static_assert(sizeof(Op) == 4);
 
-Op multi_op(Opcode opcode, int count);
-
-bool has_multi (Opcode opcode);
+bool can_merge (Opcode opcode);

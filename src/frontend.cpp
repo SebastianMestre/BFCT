@@ -7,8 +7,8 @@ std::vector<Op> compile(std::string const& code)
     {
         switch (c)
         {
-            case '+': result.push_back({ Opcode::Addi, 1 }); break;
-            case '-': result.push_back({ Opcode::Subi, 1 }); break;
+            case '+': result.push_back({ Opcode::Addi,  1 }); break;
+            case '-': result.push_back({ Opcode::Addi, -1 }); break;
             case '>': result.push_back({ Opcode::Jmp,  1 }); break;
             case '<': result.push_back({ Opcode::Jmp, -1 }); break;
             case '[': result.push_back({ Opcode::Lop }); break;

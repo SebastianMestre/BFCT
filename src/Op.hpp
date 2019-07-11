@@ -7,36 +7,31 @@
 
 enum class Opcode : uint8_t
 {
-    // Base brainfuck ops
     Lop, // Loop open
     Lcl, // Loop close
     Put, // Write to stdin
     Get, // Read from stdin
-    // Extended opset for optimization
-    // Arithmetic with memory values
-    Add,
-    Sub,
-    Set,
-    Mul,
     // Arithmetic with immediate values (constants)
     Addi,
-    Subi,
     Seti,
     Muli,
+    // Add value at offset times immediate
+    Madd,
     // Data pointer manipulation
     Jmp,
-    // Enum trick to keep count of size of instruction set
+    // Enum trick to track size of instruction set
     Count
 };
 
 struct Op
 {
     Opcode opcode;
-    int16_t val;
+    int16_t arg1;
+    int16_t arg2;
 
-    bool operator==(Op const& o) const { return opcode == o.opcode and val == o.val; }
+    bool operator==(Op const& o) const { return opcode == o.opcode and arg1 == o.arg1 and arg2 == o.arg2; }
 };
 
-static_assert(sizeof(Op) == 4);
+static_assert(sizeof(Op) == 6);
 
 bool can_merge (Opcode opcode);

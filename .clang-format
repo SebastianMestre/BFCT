@@ -1,6 +1,10 @@
 BasedOnStyle: WebKit
 
 BreakBeforeBraces: Allman
+UseTab: ForIndentation
+
+IndentWidth: 4
+TabWidth: 4
 
 ColumnLimit: 90
 PenaltyExcessCharacter: 5

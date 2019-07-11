@@ -9,6 +9,8 @@ enum class Opcode : uint8_t
 {
     Lop, // Loop open
     Lcl, // Loop close
+    Cop, // Condition open
+    Ccl, // Condition close
     Put, // Write to stdin
     Get, // Read from stdin
     // Arithmetic with immediate values (constants)

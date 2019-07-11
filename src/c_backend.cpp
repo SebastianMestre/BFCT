@@ -26,6 +26,10 @@ std::string write_c_code(std::vector<Op> const& code)
         {
             case Opcode::Lop: result << "while(*p){\n"; break;
             case Opcode::Lcl: result << "}\n"; break;
+
+            case Opcode::Cop: result << "if(*p){\n"; break;
+            case Opcode::Ccl: result << "}\n"; break;
+
             case Opcode::Put: result << "putchar(*p);\n"; break;
             case Opcode::Get: result << "*p = getchar();\n"; break;
 

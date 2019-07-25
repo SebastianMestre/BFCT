@@ -44,10 +44,8 @@ std::vector<Op> collapse_consecutive(std::vector<Op> const& code)
     return result;
 }
 
-#define SIMPLIFY_BUILD_FLAG 0
 void insert_simplified_ops(std::vector<Op>& target, std::vector<Op> const& code, int low, int high)
 {
-#if SIMPLIFY_BUILD_FLAG
 	assert(code[low].opcode == Opcode::Lop);
 	assert(code[high].opcode == Opcode::Lcl);
 	int shift = 0;
@@ -118,7 +116,6 @@ void insert_simplified_ops(std::vector<Op>& target, std::vector<Op> const& code,
 	}
 
 	return;
-#endif
 nooptimize:
 
 	for (int i = low; i <= high; ++i)

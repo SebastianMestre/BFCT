@@ -10,3 +10,6 @@ build.sh compiles the transpiler.
 
 bfrun.sh takes a filename and transpiles it to c, then compiles and runs it.
 
+## Contributing
+
+Contributions are greatly apreciated. You can take a look at the open issues on Github.

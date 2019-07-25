@@ -6,7 +6,7 @@ BFCOMPILER="./bin/bfct"
 BFFLAGS="-o $TEMPFILE"
 
 CCOMPILER=gcc
-CFLAGS="-O3 -o $OUTFILE"
+CFLAGS="-O0 -o $OUTFILE"
 
 mkdir -p $TEMPDIR
 

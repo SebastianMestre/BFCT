@@ -1,9 +1,12 @@
-FLAGS=-O3
+FLAGS="-O3 -std=c++11"
 
 COMPILER=g++
 
 SOURCE="src/main.cpp src/Op.cpp src/frontend.cpp src/optimizer.cpp src/c_backend.cpp"
 
-OUTPUT=bin/bfct
+OUTPUTDIR=bin
+OUTPUT=$OUTPUTDIR/bfct
 
-$COMPILER $FLAGS -o $OUTPUT $SOURCE 
+mkdir $OUTPUTDIR
+
+$COMPILER $FLAGS -o $OUTPUT $SOURCE

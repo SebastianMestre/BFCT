@@ -34,6 +34,6 @@ struct Op
     bool operator==(Op const& o) const { return opcode == o.opcode and arg1 == o.arg1 and arg2 == o.arg2; }
 };
 
-static_assert(sizeof(Op) == 6);
+static_assert(sizeof(Op) == 6, "");
 
 bool can_merge (Opcode opcode);

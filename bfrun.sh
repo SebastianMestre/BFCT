@@ -1,10 +1,16 @@
+TEMPDIR=temp
+TEMPFILE=$TEMPDIR/out.c
+OUTFILE=$TEMPDIR/out.out
+
 BFCOMPILER="./bin/bfct"
-BFFLAGS="-o temp/out.c"
+BFFLAGS="-o $TEMPFILE"
 
 CCOMPILER=gcc
-CFLAGS="-O3 -o temp/out.out"
+CFLAGS="-O3 -o $OUTFILE"
+
+mkdir -p $TEMPDIR
 
 $BFCOMPILER $BFFLAGS $1
-$CCOMPILER $CFLAGS temp/out.c
+$CCOMPILER $CFLAGS $TEMPFILE
 
-temp/out.out
+$OUTFILE

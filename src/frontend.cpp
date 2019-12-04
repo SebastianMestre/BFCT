@@ -1,6 +1,6 @@
 #include "frontend.hpp"
 
-std::vector<Op> compile(std::string const& code)
+AST* compile(std::string const& code)
 {
     std::vector<Op> result;
     for (char c : code)
@@ -17,5 +17,6 @@ std::vector<Op> compile(std::string const& code)
             case ',': result.push_back({ Opcode::Get }); break;
         }
     }
-    return result;
+
+    return parse_program(result, 0, result.size()).ast;
 }

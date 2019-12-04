@@ -1,8 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
-#include "Op.hpp"
+#include "ast.hpp"
 
-std::string write_c_code(std::vector<Op> const& code);
+std::string write_c_code(AST* code);

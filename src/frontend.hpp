@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 #include "Op.hpp"
+#include "ast.hpp"
 
-std::vector<Op> compile(std::string const& code);
+AST* compile(std::string const& code);

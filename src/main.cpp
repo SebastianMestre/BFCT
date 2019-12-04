@@ -116,16 +116,18 @@ int main(int argc, char** argv)
 		}
 
 		std::ofstream out_file{ output_path };
-		auto compilation_result = optimize(compile(file_contents));
+		auto compilation_result = compile(file_contents);
 
 		switch (target)
 		{
 		case Target::C:
 			out_file << write_c_code(compilation_result);
 			break;
-		case Target::MIPS:
-			out_file << write_mips_code(compilation_result);
-			break;
+// 		case Target::MIPS:
+// 			out_file << write_mips_code(compilation_result);
+// 			break;
+		default:
+			std::cerr << "Could not compile.\n";
 		}
 	}
 

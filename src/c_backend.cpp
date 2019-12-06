@@ -39,17 +39,17 @@ std::string write_c_code(AST* code) {
 std::string write_c_ast(AST* code) {
     std::stringstream result;
 
-	switch(code->expr_type){
-		case ExpressionType::BLOCK_EXPR:
-			std::cout << "codegen block\n";
-			break;
-		case ExpressionType::LOOP_EXPR:
-			std::cout << "codegen loop\n";
-			break;
-		case ExpressionType::OP_EXPR:
-			std::cout << "codegen op\n";
-			break;
-	}
+	// switch(code->expr_type){
+	// 	case ExpressionType::BLOCK_EXPR:
+	// 		std::cout << "codegen block\n";
+	// 		break;
+	// 	case ExpressionType::LOOP_EXPR:
+	// 		std::cout << "codegen loop\n";
+	// 		break;
+	// 	case ExpressionType::OP_EXPR:
+	// 		std::cout << "codegen op\n";
+	// 		break;
+	// }
 
 	switch(code->expr_type){
 		case ExpressionType::BLOCK_EXPR:

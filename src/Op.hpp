@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cstdint>
 
-enum class Opcode : uint8_t
+enum class Opcode
 {
     Lop, // Loop open
     Lcl, // Loop close
@@ -23,6 +23,23 @@ enum class Opcode : uint8_t
     Jmp,
     // Enum trick to track size of instruction set
     Count
+};
+
+enum class TokenType {
+	OBrace,
+	CBrace,
+	Plus,
+	Minus,
+	Comma,
+	Dot,
+	Lt,
+	Gt
+};
+
+struct Token {
+	TokenType type;
+	int line;
+	int pos;
 };
 
 struct Op

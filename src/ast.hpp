@@ -34,9 +34,9 @@ struct ParseResult {
 
 void parse_error (char const* fstr, int i);
 
-ParseResult parse_op (std::vector<Op> const& arr, int l, int r);
+ParseResult parse_op (std::vector<Token> const& arr, int l, int r);
 
-ParseResult parse_loop (std::vector<Op> const& arr, int l, int r);
+ParseResult parse_loop (std::vector<Token> const& arr, int l, int r);
 
-ParseResult parse_program (std::vector<Op> const& arr, int l, int r);
+ParseResult parse_program (std::vector<Token> const& arr, int l, int r);
 

@@ -1,11 +1,7 @@
 #pragma once
 
-#include <vector>
+#include "ast.hpp"
 
-#include "Op.hpp"
+void optimize(AST* code);
 
-std::vector<Op> collapse_consecutive(std::vector<Op> const& code);
 
-std::vector<Op> constant_folding(std::vector<Op> const& code);
-
-std::vector<Op> optimize(std::vector<Op> const& code);

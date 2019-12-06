@@ -9,7 +9,6 @@ AST* make_op_ast (Op op) {
 	return new AST {
 		ExpressionType::OP_EXPR,
 		op,
-		{},
 		{}
 	};
 }
@@ -17,7 +16,6 @@ AST* make_op_ast (Op op) {
 AST* make_loop_ast () {
 	return new AST {
 		ExpressionType::LOOP_EXPR,
-		{},
 		{},
 		{}
 	};
@@ -63,14 +61,14 @@ ParseResult parse_loop (std::vector<Token> const& arr, int l, int r) {
 
 		ParseResult try_op = parse_op(arr, i, r);
 		if(try_op.ast){
-			ast->loop_body.push_back(try_op.ast);
+			ast->body.push_back(try_op.ast);
 			i = try_op.l;
 			continue;
 		}
 
 		ParseResult try_loop = parse_loop(arr, i, r);
 		if(try_loop.ast){
-			ast->loop_body.push_back(try_loop.ast);
+			ast->body.push_back(try_loop.ast);
 			i = try_loop.l;
 			continue;
 		}
@@ -84,7 +82,7 @@ ParseResult parse_loop (std::vector<Token> const& arr, int l, int r) {
 
 ParseResult parse_program (std::vector<Token> const& arr, int l, int r) {
 	// @@ Cleanup: Almost duplicated code in parse_loop
-	AST* ast = new AST{ExpressionType::BLOCK_EXPR, {}, {}, {}};
+	AST* ast = new AST{ExpressionType::BLOCK_EXPR, {}, {}};
 
 	for(int i = l; i < r;){
 		if(arr[i].type == TokenType::CBrace){
@@ -94,14 +92,14 @@ ParseResult parse_program (std::vector<Token> const& arr, int l, int r) {
 
 		ParseResult try_op = parse_op(arr, i, r);
 		if(try_op.ast){
-			ast->block_body.push_back(try_op.ast);
+			ast->body.push_back(try_op.ast);
 			i = try_op.l;
 			continue;
 		}
 
 		ParseResult try_loop = parse_loop(arr, i, r);
 		if(try_loop.ast){
-			ast->block_body.push_back(try_loop.ast);
+			ast->body.push_back(try_loop.ast);
 			i = try_loop.l;
 			continue;
 		}

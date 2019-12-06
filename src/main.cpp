@@ -118,6 +118,7 @@ int main(int argc, char** argv)
 
 		std::ofstream out_file{ output_path };
 		auto compilation_result = compile(file_contents);
+		optimize(compilation_result);
 
 		switch (target)
 		{

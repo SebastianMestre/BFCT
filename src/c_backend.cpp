@@ -19,9 +19,9 @@ std::string write_c_code(AST* code) ;
 
 std::string write_c_ast(AST* code) ;
 
-std::string write_c_block (std::vector<AST*> block_body) ;
+std::string write_c_block (std::vector<AST*> body) ;
 
-std::string write_c_loop (std::vector<AST*> loop_body) ;
+std::string write_c_loop (std::vector<AST*> body) ;
 
 std::string write_c_op (Op op) ;
 
@@ -53,19 +53,19 @@ std::string write_c_ast(AST* code) {
 
 	switch(code->expr_type){
 		case ExpressionType::BLOCK_EXPR:
-			return write_c_block(code->block_body);
+			return write_c_block(code->body);
 		case ExpressionType::LOOP_EXPR:
-			return write_c_loop(code->loop_body);
+			return write_c_loop(code->body);
 		case ExpressionType::OP_EXPR:
 			return write_c_op(code->op);
 	}
     return result.str();
 }
 
-std::string write_c_block (std::vector<AST*> block_body) {
+std::string write_c_block (std::vector<AST*> body) {
 	std::stringstream result;
 
-    for (AST* ast : block_body)
+    for (AST* ast : body)
     {
 		result << write_c_ast(ast);
     }
@@ -73,11 +73,11 @@ std::string write_c_block (std::vector<AST*> block_body) {
 	return result.str();
 }
 
-std::string write_c_loop (std::vector<AST*> loop_body) {
+std::string write_c_loop (std::vector<AST*> body) {
 	std::stringstream result;
 
 	result << "while(*p){\n";
-    for (AST* ast : loop_body)
+    for (AST* ast : body)
     {
 		result << write_c_ast(ast);
     }

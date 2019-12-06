@@ -1,7 +1,7 @@
 #include "ast.hpp"
 
-void parse_error (char const* fstr, int i) {
-	fprintf(stderr, fstr, i);
+void parse_error (char const* fstr, int line, int pos) {
+	fprintf(stderr, fstr, line, pos);
 	exit(1);
 }
 
@@ -78,8 +78,8 @@ ParseResult parse_loop (std::vector<Token> const& arr, int l, int r) {
 
 	// @@ Memory: we are leaking the discarded ast here.
 
-	// @@ Print something better, line number, context, etc
-	parse_error("Unclosed loop starting at token %d ", l);
+	// @@ Print some context??
+	parse_error("Unclosed loop starting at %d:%d\n", arr[l].line+1, arr[l].pos+1);
 }
 
 ParseResult parse_program (std::vector<Token> const& arr, int l, int r) {
@@ -88,8 +88,8 @@ ParseResult parse_program (std::vector<Token> const& arr, int l, int r) {
 
 	for(int i = l; i < r;){
 		if(arr[i].type == TokenType::CBrace){
-			// @@ Print line number, etc instead of token number
-			parse_error("Unmatched loop close at token %d ", i);
+			// @@ Print context as well?
+			parse_error("Unmatched loop close at %d:%d\n", arr[i].line+1, arr[i].pos+1);
 		}
 
 		ParseResult try_op = parse_op(arr, i, r);

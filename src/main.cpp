@@ -112,6 +112,7 @@ int main(int argc, char** argv)
 			while (std::getline(in_file, line))
 			{
 				file_contents.append(line);
+				file_contents.push_back('\n');
 			}
 		}
 

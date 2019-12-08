@@ -45,8 +45,8 @@ struct Token {
 struct Op
 {
     Opcode opcode;
-    int16_t arg1;
-    int16_t arg2;
+    int arg1;
+    int arg2;
 
     bool operator == (Op const& o) const {
 		return opcode == o.opcode and arg1 == o.arg1 and arg2 == o.arg2;

@@ -1,4 +1,4 @@
-FLAGS="-O2 -std=c++14"
+FLAGS="-O0 -std=c++14"
 
 COMPILER=g++
 

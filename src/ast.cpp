@@ -2,10 +2,7 @@
 
 #include <cassert>
 
-void parse_error (char const* fstr, int line, int pos) {
-	fprintf(stderr, fstr, line, pos);
-	exit(1);
-}
+#include "logging.hpp"
 
 AST* make_op_ast (Op op) {
 	return new AST {
@@ -101,7 +98,7 @@ ParseResult parse_simple_block (std::vector<Token> const& arr, int l, int r) {
 			continue;
 		}
 
-		parse_error("unknown error @ %d:%d\n", arr[i].line, arr[i].pos);
+		log_error_fatal("unknown error @ %d:%d\n", arr[i].line, arr[i].pos);
 	}
 
 	return {ast, r, r};
@@ -144,7 +141,7 @@ ParseResult parse_loop (std::vector<Token> const& arr, int l, int r) {
 	}
 
 	// @@ Print some context??
-	parse_error("Unclosed loop starting at %d:%d\n", arr[l].line+1, arr[l].pos+1);
+	log_error_fatal("Unclosed loop starting at %d:%d\n", arr[l].line+1, arr[l].pos+1);
 
 
 	// Right now failing to parse a loop terminates the compiler but maybe we'll
@@ -163,7 +160,7 @@ ParseResult parse_program (std::vector<Token> const& arr, int l, int r) {
 	for(int i = l; i < r;){
 		if(arr[i].type == TokenType::CBrace){
 			// @@ Print context as well?
-			parse_error("Unmatched loop close at %d:%d\n", arr[i].line+1, arr[i].pos+1);
+			log_error_fatal("Unmatched loop close at %d:%d\n", arr[i].line+1, arr[i].pos+1);
 		}
 
 		ParseResult try_block = parse_simple_block(arr, i, r);

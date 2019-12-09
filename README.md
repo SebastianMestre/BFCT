@@ -5,33 +5,139 @@ A BrainFuck optimizing transpiler
 
 ### Optimizations
 
-The transpiler does a few different optimizations:
+Right now, there is a single optimization that is performed.
 
-A big one is that "trivial loops" -that is: those that contain no loops, the memory pointer ends at the same point where it starts, and the value at that position goes down by one after an iteration- are reduced to a constant time construct (made up mostly of additions and multiplications).
+We take some instructions, e.g:
 
-As a consequence of that, the `[-]` and `[+]` expressions are reduced to a single "set to zero" operation. This could be generalized for any amount of increment or decrement, but I just haven't gotten around to doing that.
+```bf
+>>->+>-+<-+>-+-
+>+<+<++++++-<><
++>+>+>-<<+>->><
+```
 
+which would compile to C code that looks like this:
 
-Succesive operations of the same type on the same value are reduced to a single operation. This could be seen as a special case of the first optimization, but some changes should be done before implementing it that way is feasible.
+```C
+p += 1;
+p += 1;
+*p += -1;
+p += 1;
+*p += 1;
+p += 1;
+*p += -1;
+*p += 1;
+...
+```
 
+And sumarize the operations into the following, equivalent, code:
+
+```C
+p += 3;
+*p += 8;
+p += 2;
+```
+
+#### Future
+
+An optimization I'm working on is to take a loop that runs a fixed number of
+types, and turn it into a single run of the iterated version of its instructions.
+
+Here is an example:
+
+```bf
+[-
+  >>+
+  >>>+
+  >>>>++
+]
+```
+
+Unoptimized:
+```C
+while(*p){
+	*p += -1;
+	p += 2;
+	*p += 1;
+	p += 1;
+	*p += 1;
+	p += 1;
+	*p += 2;
+}
+```
+
+Optimized (note how there is no loop):
+```C
+temp = *p;
+*p += temp * -1;
+p += 2;
+*p += temp * 1;
+p += 1;
+*p += temp * 1;
+p += 1;
+*p += temp * 2;
+```
+
+Another interesting optmization would be to fold "move pointer, then operate on
+value" into "operate on pointer index", which gives more readable C, and should
+give better codegen on both MIPS and x86.
+
+Continuing the example from before, we would get:
+```C
+temp = *p;
+p[0] += temp * -1;
+p[2] += temp * 1;
+p[3] += temp * 1;
+p[4] += temp * 2;
+p += 4;
+```
+
+Of course, more things can be done, like eliding multiplications by 1, doing
+some strength reduction, or remembering where temp comes from:
+
+```C
+temp = *p;
+p[0] = 0;
+p[2] += temp;
+p[3] += temp;
+p[4] += temp << 1;
+p += 4;
+```
+
+but that's looking a bit too far into the future, I would say.
 
 ### Multiple target languages
 
 Currently, the transpiler supports compilation to the following targets:
  - C (default)
- - MIPS Assembly
+ - MIPS Assembly (not working at the moment due to major changes to how the compiler works)
 
 I plan on adding support for other languages eventually.
 
 The choice of languages so far is motivated in a very simple way:
 
-C: There exist very advanced C compilers that can optimize your code way further than this simple program, so if you want to really run high performance BF code, then transpiling to C to then compile it with one of those optimizing compilers is the way to go.
+C: There exist very advanced C compilers that can optimize your code way further
+than this simple program, so if you want to really run high performance BF code,
+then transpiling to C to then compile it with one of those optimizing compilers
+is the way to go.
 
-MIPS: I wanted an Assembler back end, and I know MIPS, so I figured I would do just that.
+MIPS: I wanted an ASM back end, and I know MIPS, so I figured I would target
+that.
+
+#### Future
+
+I think having an LLVM backend would be pretty cool. I think GCC can also be
+used in the same way, to some degree. That would also be interesting.
+
+WASM backend, to run your high-performance brainfuck programs on the web, would
+be great.
 
 ## Build
 
 build.sh compiles the transpiler. It relies on your working directory being the root of the repo.
+
+#### Future
+
+I would like to use a build system, I just have to learn one first.
 
 ## Contributing
 

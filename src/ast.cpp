@@ -115,10 +115,7 @@ ParseResult parse_simple_block (std::vector<Token> const& arr, int l, int r) {
 		}
 	}
 
-	// @@ Memory: we are leaking the discarded ast here.
-
-	// @@ Print some context??
-	parse_error("Unclosed loop starting at %d:%d\n", arr[l].line+1, arr[l].pos+1);
+	return {ast, r, r};
 }
 
 ParseResult parse_loop (std::vector<Token> const& arr, int l, int r) {

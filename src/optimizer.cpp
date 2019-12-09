@@ -89,6 +89,5 @@ void collapse_blocks (AST* code) {
 void optimize(AST* code)
 {
 	collapse_blocks(code);
-	return;
 }
 

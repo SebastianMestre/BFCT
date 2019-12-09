@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include "Op.hpp"
+#include "token.hpp"
 
 enum class ExpressionType {
 	BLOCK_EXPR,

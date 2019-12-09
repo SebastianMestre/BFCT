@@ -1,5 +1,7 @@
 #include "frontend.hpp"
 
+#include "token.hpp"
+
 AST* compile(std::string const& code)
 {
     std::vector<Token> result;

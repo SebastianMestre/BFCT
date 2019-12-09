@@ -6,20 +6,52 @@
 #include <vector>
 
 #include "Op.hpp"
+#include "logging.hpp"
 
-void trivial_loop_to_mult_impl (AST* code)
+void flatten_loop (AST* code);
+
+void flatten_loop_impl (AST* code)
 {
+	if (code->body.size() != 1) {
+		for(AST* ast : code->body)
+			flatten_loop(ast);
+		return;
+	}
+
+	if(code->body[0]->expr_type != ExpressionType::FLAT_BLOCK_EXPR){
+		return;
+	}
+
+	if(not (code->body[0]->flags & ASTFlags::is_trivial)) {
+		return;
+	}
+
+	if(not (code->body[0]->flags & ASTFlags::is_simplified)){
+		log_warn("Attempting to flatten a loop with a non-simplified body\n");
+	}
 }
 
-void trivial_loop_to_mult (AST* code)
+void flatten_loop (AST* code)
 {
+	switch (code->expr_type) {
+	case ExpressionType::BLOCK_EXPR:
+		for (AST* ast : code->body)
+			flatten_loop(ast);
+		return;
+
+	case ExpressionType::LOOP_EXPR:
+		return flatten_loop_impl(code);
+
+	default:
+		return;
+	}
 }
 
 // @@ Think of a better name for this optimization
-void collapse_blocks_impl (AST* code) {
+void simplify_block_impl (AST* code) {
 	assert(code->expr_type == ExpressionType::FLAT_BLOCK_EXPR);
 
-	if(not code->flags & ASTFlags::is_trivial)
+	if(not (code->flags & ASTFlags::is_trivial))
 		return;
 
 	int final_pos = 0;
@@ -68,17 +100,18 @@ void collapse_blocks_impl (AST* code) {
 
 	// @@ Memory. We are leaking the nodes in the old code->body
 	code->body = std::move(result_body);
+	code->flags |= ASTFlags::is_simplified;
 }
 
-void collapse_blocks (AST* code) {
+void simplify_block (AST* code) {
 	switch (code->expr_type) {
 	case ExpressionType::FLAT_BLOCK_EXPR:
-		return collapse_blocks_impl(code);
+		return simplify_block_impl(code);
 
 	case ExpressionType::BLOCK_EXPR: /* fallthrough */
 	case ExpressionType::LOOP_EXPR:
 		for (AST* ast : code->body)
-			collapse_blocks(ast);
+			simplify_block(ast);
 		return;
 
 	default:
@@ -88,6 +121,7 @@ void collapse_blocks (AST* code) {
 
 void optimize(AST* code)
 {
-	collapse_blocks(code);
+	simplify_block(code);
+	// flatten_loop(code);
 }
 

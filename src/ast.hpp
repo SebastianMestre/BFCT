@@ -18,6 +18,7 @@ enum class ExpressionType {
 namespace ASTFlags {
 	constexpr uint64_t none = 0x0;
 	constexpr uint64_t is_trivial = 0x1;
+	constexpr uint64_t is_simplified = 0x2;
 };
 
 // @@ Allocating an entire AST node for an Op seems wasteful.

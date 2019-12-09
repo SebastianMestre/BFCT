@@ -20,6 +20,7 @@ std::string write_c_code(AST* code) ;
 std::string write_c_ast(AST* code) ;
 
 std::string write_c_block (std::vector<AST*> body) ;
+std::string write_c_flat_block (std::vector<AST*> body) ;
 
 std::string write_c_loop (std::vector<AST*> body) ;
 
@@ -52,6 +53,8 @@ std::string write_c_ast(AST* code) {
 	// }
 
 	switch(code->expr_type){
+		case ExpressionType::FLAT_BLOCK_EXPR:
+			return write_c_flat_block(code->body);
 		case ExpressionType::BLOCK_EXPR:
 			return write_c_block(code->body);
 		case ExpressionType::LOOP_EXPR:
@@ -60,6 +63,17 @@ std::string write_c_ast(AST* code) {
 			return write_c_op(code->op);
 	}
     return result.str();
+}
+
+std::string write_c_flat_block (std::vector<AST*> body) {
+	std::stringstream result;
+
+    for (AST* ast : body)
+    {
+		result << write_c_ast(ast);
+    }
+
+	return result.str();
 }
 
 std::string write_c_block (std::vector<AST*> body) {
@@ -91,11 +105,13 @@ std::string write_c_op (Op op) {
 
 	switch (op.opcode)
 	{
+		/*
 		case Opcode::Lop: result << "while(*p){\n"; break;
 		case Opcode::Lcl: result << "}\n"; break;
 
 		case Opcode::Cop: result << "if(*p){\n"; break;
 		case Opcode::Ccl: result << "}\n"; break;
+		*/
 
 		case Opcode::Put: result << "putchar(*p);\n"; break;
 		case Opcode::Get: result << "*p = getchar();\n"; break;

@@ -38,6 +38,7 @@ std::string write_mips_code(std::vector<Op> const& code)
     {
         switch (op.opcode)
         {
+			/*
             case Opcode::Lop: {
                 int loopId = loopCount;
                 loopStack.push_back(loopCount);
@@ -57,6 +58,7 @@ std::string write_mips_code(std::vector<Op> const& code)
 
             case Opcode::Cop: result << "if(*p){\n"; break;
             case Opcode::Ccl: result << "}\n"; break;
+			*/
 
             case Opcode::Put: {
                 result << "li $v0, 11\n";

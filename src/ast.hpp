@@ -10,7 +10,13 @@
 enum class ExpressionType {
 	BLOCK_EXPR,
 	LOOP_EXPR,
-	OP_EXPR
+	OP_EXPR,
+	FLAT_BLOCK_EXPR
+};
+
+namespace ASTFlags {
+	constexpr uint64_t none = 0x0;
+	constexpr uint64_t is_trivial = 0x1;
 };
 
 // @@ Allocating an entire AST node for an Op seems wasteful.
@@ -25,6 +31,8 @@ struct AST {
 
 	// Block or Loop
 	std::vector<AST*> body;
+
+	uint64_t flags;
 };
 
 struct ParseResult {

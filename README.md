@@ -40,7 +40,7 @@ p += 2;
 #### Future
 
 An optimization I'm working on is to take a loop that runs a fixed number of
-types, and turn it into a single run of the iterated version of its instructions.
+times, and turn it into a single run of the iterated version of its instructions.
 
 Here is an example:
 

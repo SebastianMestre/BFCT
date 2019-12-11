@@ -49,6 +49,7 @@ Here is an example:
   >>+
   >>>+
   >>>>++
+  <<<<<<<<<
 ]
 ```
 
@@ -58,10 +59,11 @@ while(*p){
 	*p += -1;
 	p += 2;
 	*p += 1;
-	p += 1;
+	p += 3;
 	*p += 1;
-	p += 1;
+	p += 4;
 	*p += 2;
+	p += -9;
 }
 ```
 
@@ -71,10 +73,11 @@ temp = *p;
 *p += temp * -1;
 p += 2;
 *p += temp * 1;
-p += 1;
+p += 3;
 *p += temp * 1;
-p += 1;
+p += 4;
 *p += temp * 2;
+p += -9;
 ```
 
 Another interesting optmization would be to fold "move pointer, then operate on
@@ -86,9 +89,8 @@ Continuing the example from before, we would get:
 temp = *p;
 p[0] += temp * -1;
 p[2] += temp * 1;
-p[3] += temp * 1;
-p[4] += temp * 2;
-p += 4;
+p[5] += temp * 1;
+p[9] += temp * 2;
 ```
 
 Of course, more things can be done, like eliding multiplications by 1, doing
@@ -98,9 +100,8 @@ some strength reduction, or remembering where temp comes from:
 temp = *p;
 p[0] = 0;
 p[2] += temp;
-p[3] += temp;
-p[4] += temp << 1;
-p += 4;
+p[5] += temp;
+p[9] += temp << 1;
 ```
 
 but that's looking a bit too far into the future, I would say.

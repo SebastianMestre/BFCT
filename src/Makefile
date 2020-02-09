@@ -5,9 +5,12 @@ CXXFLAGS = -Wall -O2 -std=c++14
 OUTDIR = ../bin
 OUTFILE = $(OUTDIR)/bfct 
 
+prepare:
+	mkdir -p ../bin
+
 all: bfct clean
 
-unity: unity_build.cpp
+unity: unity_build.cpp | prepare
 	$(CXX) $(CXXFLAGS) -o $(OUTFILE) $^
 
 bfct: \
@@ -17,7 +20,7 @@ bfct: \
 	optimizer.o \
 	c_backend.o \
 	mips_backend.o \
-	ast.o
+	ast.o | prepare
 	$(CXX) $(CXXFLAGS) -o $(OUTFILE) $^
 
 main.o: main.cpp

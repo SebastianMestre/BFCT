@@ -134,11 +134,19 @@ be great.
 
 ## Build
 
-build.sh compiles the transpiler. It relies on your working directory being the root of the repo.
+With your working directory set to ```src```,  just run
 
-#### Future
+```
+make all
+```
 
-I would like to use a build system, I just have to learn one first.
+This will leave an executable in the ```bin``` directory.
+
+There is another - experimental - target which should compile faster and possibly with better optimizations.
+
+```
+make unity
+```
 
 ## Contributing
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace {
+namespace mips {
 constexpr char const* output_header = ".data\n"
                                       ".text\n"
                                       "main:\n"
@@ -25,6 +25,7 @@ constexpr char const* output_footer = "li $v0, 10\n"
 
 std::string write_mips_code(std::vector<Op> const& code)
 {
+	using namespace mips;
     std::stringstream result;
     result << output_header;
 

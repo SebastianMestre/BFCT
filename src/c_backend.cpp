@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace {
+namespace c_language {
 constexpr char const* output_header = "#include <stdio.h>\n"
                                       "#include <stdint.h>\n"
                                       "#define BUFFER_SIZE 1000\n"
@@ -27,6 +27,8 @@ std::string write_c_loop (std::vector<AST*> body) ;
 std::string write_c_op (Op op) ;
 
 std::string write_c_code(AST* code) {
+	using namespace c_language;
+
     std::stringstream result;
     result << output_header;
 
